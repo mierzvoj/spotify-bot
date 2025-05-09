@@ -101,34 +101,39 @@ java -jar build/libs/spotify-telegram-bot-1.0.jar
 ## Project Structure
 
 ```
-spotify-telegram-bot/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/
-│   │   │       └── spotify/
-│   │   │           └── telegram/
-│   │   │               └── bot/
-│   │   │                   ├── Main.java
-│   │   │                   ├── SpotifyTelegramBot.java
-│   │   │                   ├── SpotifyService.java
-│   │   │                   ├── UserSessionManager.java
-│   │   │                   └── Config.java
-│   │   └── resources/
-│   │       └── assets/
-│   │           └── token.env
-│   └── test/
-│       └── java/
-│           └── com/
-│               └── spotify/
-│                   └── telegram/
-│                       └── bot/
-│                           └── SpotifyTelegramBotTest.java
+SPOTIFY-BOT/
+├── .idea/
+├── .vscode/
+│   ├── launch.json
+│   └── settings.json
 ├── bot/
-│   └── api/
-│       ├── callback.js
-│       └── vercel.json
-├── pom.xml (or build.gradle)
+│   ├── .vercel/
+│   ├── api/
+│   │   ├── callback.js
+│   │   └── vercel.json
+│   └── src/
+│       ├── main/
+│       │   ├── java/
+│       │   │   └── bot/
+│       │   │       ├── auth/
+│       │   │       ├── server/
+│       │   │       ├── services/
+│       │   │       │   └── SpotifyService.java
+│       │   │       ├── shared/
+│       │   │       └── telegramBot/
+│       │   │           ├── SpotifyTelegramBot.java
+│       │   │           └── Main.java
+│       │   └── resources/
+│       └── test/
+├── target/
+│   ├── classes/
+│   ├── generated-sources/
+│   ├── maven-archiver/
+│   ├── maven-status/
+│   ├── test-classes/
+│   └── bot-1.0-SNAPSHOT.jar
+├── .gitignore
+├── pom.xml
 └── README.md
 ```
 
