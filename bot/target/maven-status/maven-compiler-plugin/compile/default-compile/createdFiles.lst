@@ -1,0 +1,8 @@
+com\spotify\telegram\bot\telegramBot\SpotifyTelegramBot.class
+com\spotify\telegram\bot\server\OAuthCallbackServer$CallbackHandler.class
+com\spotify\telegram\bot\Main.class
+com\spotify\telegram\bot\services\SpotifyService.class
+com\spotify\telegram\bot\auth\UserSessionManager$SpotifyUserSession.class
+com\spotify\telegram\bot\server\OAuthCallbackServer.class
+com\spotify\telegram\bot\shared\TokenRefreshScheduler.class
+com\spotify\telegram\bot\auth\UserSessionManager.class
