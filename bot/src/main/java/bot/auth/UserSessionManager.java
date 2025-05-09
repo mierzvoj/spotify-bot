@@ -1,4 +1,4 @@
-package com.spotify.telegram.bot.auth;
+package bot.auth;
 
 import java.util.HashMap;
 import java.util.Map;

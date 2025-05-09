@@ -1,9 +1,10 @@
-package com.spotify.telegram.bot.server;
+package bot.server;
 
-import com.spotify.telegram.bot.services.SpotifyService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+
+import bot.services.SpotifyService;
 
 import java.io.IOException;
 import java.io.OutputStream;

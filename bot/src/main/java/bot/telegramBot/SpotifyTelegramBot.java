@@ -1,13 +1,14 @@
-package com.spotify.telegram.bot.telegramBot;
+package bot.telegramBot;
 
-import com.spotify.telegram.bot.auth.UserSessionManager;
-import com.spotify.telegram.bot.services.SpotifyService;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import bot.auth.UserSessionManager;
+import bot.services.SpotifyService;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class SpotifyTelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "8126289700:AAG5UVTnsRYp3OhOjjuM1znFhULyuI7UP3I";
+        return "";
     }
 
 

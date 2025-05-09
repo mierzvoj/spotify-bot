@@ -1,10 +1,10 @@
-package com.spotify.telegram.bot.shared;
-
-import com.spotify.telegram.bot.services.SpotifyService;
+package bot.shared;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import bot.services.SpotifyService;
 
 public class TokenRefreshScheduler {
     private final SpotifyService spotifyService;

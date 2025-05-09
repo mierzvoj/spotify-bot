@@ -1,11 +1,12 @@
-package com.spotify.telegram.bot;
+package bot;
 
-import com.spotify.telegram.bot.server.OAuthCallbackServer;
-import com.spotify.telegram.bot.services.SpotifyService;
-import com.spotify.telegram.bot.shared.TokenRefreshScheduler;
-import com.spotify.telegram.bot.telegramBot.SpotifyTelegramBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+
+import bot.server.OAuthCallbackServer;
+import bot.services.SpotifyService;
+import bot.shared.TokenRefreshScheduler;
+import bot.telegramBot.SpotifyTelegramBot;
 
 public class Main {
     public static void main(String[] args) {

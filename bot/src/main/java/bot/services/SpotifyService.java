@@ -1,4 +1,4 @@
-package com.spotify.telegram.bot.services;
+package bot.services;
 
 import com.google.gson.JsonParser;
 import org.apache.hc.core5.http.ParseException;
