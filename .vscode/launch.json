@@ -1,22 +1,24 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        
-        {
-            "type": "java",
-            "name": "Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "Main",
-            "request": "launch",
-            "mainClass": "com.spotify.telegram.bot.Main",
-            "projectName": "bot"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "bot.Main",
+      "projectName": "bot",
+      "env": {
+        "SPOTIFY_CLIENT_ID": "your_spotify_client_id",
+        "SPOTIFY_CLIENT_SECRET": "your_spotify_client_secret",
+        "SPOTIFY_REDIRECT_URI": "https://spotbot3-muhf813tp-mierzvojs-projects.vercel.app/api/callback",
+        "TELEGRAM_BOT_TOKEN": "your_telegram_bot_token"
+      }
+    }
+  ]
 }

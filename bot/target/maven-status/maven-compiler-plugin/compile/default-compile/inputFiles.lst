@@ -1,6 +1,6 @@
-C:\code\spring\spotify-bot\bot\src\main\java\com\spotify\telegram\bot\services\SpotifyService.java
-C:\code\spring\spotify-bot\bot\src\main\java\com\spotify\telegram\bot\shared\TokenRefreshScheduler.java
-C:\code\spring\spotify-bot\bot\src\main\java\com\spotify\telegram\bot\Main.java
-C:\code\spring\spotify-bot\bot\src\main\java\com\spotify\telegram\bot\telegramBot\SpotifyTelegramBot.java
-C:\code\spring\spotify-bot\bot\src\main\java\com\spotify\telegram\bot\server\OAuthCallbackServer.java
-C:\code\spring\spotify-bot\bot\src\main\java\com\spotify\telegram\bot\auth\UserSessionManager.java
+C:\code\spring\spotify-bot\bot\src\main\java\bot\auth\UserSessionManager.java
+C:\code\spring\spotify-bot\bot\src\main\java\bot\services\SpotifyService.java
+C:\code\spring\spotify-bot\bot\src\main\java\bot\Main.java
+C:\code\spring\spotify-bot\bot\src\main\java\bot\shared\TokenRefreshScheduler.java
+C:\code\spring\spotify-bot\bot\src\main\java\bot\server\OAuthCallbackServer.java
+C:\code\spring\spotify-bot\bot\src\main\java\bot\telegramBot\SpotifyTelegramBot.java

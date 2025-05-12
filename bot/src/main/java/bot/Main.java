@@ -2,7 +2,6 @@ package bot;
 
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-
 import bot.server.OAuthCallbackServer;
 import bot.services.SpotifyService;
 import bot.shared.TokenRefreshScheduler;
