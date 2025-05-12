@@ -30,8 +30,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
 public class SpotifyService {
-    private static final String CLIENT_ID = "d985f131818f42b4b4eacdd65dc9e681";
-    private static final String CLIENT_SECRET = "bb3441f6fe77456a88fd5ce1c8b94bb9";
+    private static final String CLIENT_ID = "";
+    private static final String CLIENT_SECRET = "";
     URI redirectUri = URI.create("https://spotbot3-6nzlbranf-mierzvojs-projects.vercel.app/api/callback");
 
     private final SpotifyApi spotifyApi;

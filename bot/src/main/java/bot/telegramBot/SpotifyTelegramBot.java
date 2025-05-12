@@ -47,7 +47,7 @@ public class SpotifyTelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "8131930644:AAE1TE4mFkQsK3cmNABGknRgDphu4VmrqJM";
+        return ":";
     }
 
     private void sendTextMessage(long chatId, String text) {
