@@ -1,9 +1,11 @@
 package bot.telegramBot;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bot.shared.UserSessionManager;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -13,8 +15,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import bot.auth.UserSessionManager;
-import bot.auth.UserSessionManager.UserSession;
 import bot.services.SpotifyService;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
@@ -23,13 +23,21 @@ import se.michaelthelin.spotify.model_objects.specification.Track;
 
 public class SpotifyTelegramBot extends TelegramLongPollingBot {
 
-    private SpotifyService spotifyService = new SpotifyService();
-    private UserSessionManager sessionManager = new UserSessionManager();
+    private final SpotifyService spotifyService;
+    private final UserSessionManager userSessionManager;
 
     public SpotifyTelegramBot(SpotifyService spotifyService) {
         this.spotifyService = spotifyService;
-        this.sessionManager = UserSessionManager.getInstance(); // Use singleton instance
-        System.out.println("SpotifyTelegramBot initialized");
+        // Always get the singleton instance
+        this.userSessionManager = UserSessionManager.getInstance();
+        System.out.println("SpotifyTelegramBot initialized with UserSessionManager: " + this.userSessionManager);
+
+
+        if (this.userSessionManager == null) {
+            System.err.println("CRITICAL ERROR: Failed to initialize UserSessionManager in bot constructor!");
+        } else {
+            System.out.println("SpotifyTelegramBot initialized with UserSessionManager: " + this.userSessionManager);
+        }
     }
 
     @Override
@@ -39,7 +47,7 @@ public class SpotifyTelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "";
+        return "8131930644:AAE1TE4mFkQsK3cmNABGknRgDphu4VmrqJM";
     }
 
     private void sendTextMessage(long chatId, String text) {
@@ -111,7 +119,7 @@ public class SpotifyTelegramBot extends TelegramLongPollingBot {
         System.out.println("Handling command: " + cmd + " from user: " + chatId);
 
         // Check authentication for commands that require it
-        boolean isAuthenticated = sessionManager.isUserAuthenticated(chatId);
+        boolean isAuthenticated = userSessionManager.isUserAuthenticated(chatId);
         System.out.println("User authenticated: " + isAuthenticated);
 
         switch (cmd) {
@@ -136,7 +144,7 @@ public class SpotifyTelegramBot extends TelegramLongPollingBot {
                 break;
 
             case "/logout":
-                sessionManager.logoutUser(chatId);
+                userSessionManager.logoutUser(chatId);
                 sendTextMessage(chatId, "You have been logged out of Spotify.");
                 break;
 
@@ -148,8 +156,8 @@ public class SpotifyTelegramBot extends TelegramLongPollingBot {
 
                 // Add this case to your handleCommand method
             case "/status":
-                boolean auth = sessionManager.isUserAuthenticated(chatId);
-                UserSession session = sessionManager.getSession(chatId);
+                boolean auth = userSessionManager.isUserAuthenticated(chatId);
+                UserSessionManager.UserSession session = userSessionManager.getSession(chatId);
 
                 StringBuilder status = new StringBuilder();
                 status.append("🔍 Bot Status:\n\n");
@@ -194,6 +202,82 @@ public class SpotifyTelegramBot extends TelegramLongPollingBot {
                     handleSkipCommand(chatId);
                 else if (cmd.equals("/current"))
                     handleCurrentTrackCommand(chatId);
+                break;
+            case "/sessions":
+                if (chatId == 7143567186l) { // Your user ID for admin commands
+                    String diagnostics = userSessionManager.getDiagnostics();
+                    sendTextMessage(chatId, diagnostics);
+                } else {
+                    sendTextMessage(chatId, "This command is restricted to administrators.");
+                }
+                break;
+
+            case "/reset_session":
+                // Force create a new session
+                userSessionManager.getOrCreateSession(chatId);
+                sendTextMessage(chatId, "Your session has been reset. Use /spotify_login to authenticate.");
+                break;
+
+            // Add these cases to your handleCommand method
+            case "/auth_debug":
+                StringBuilder debug = new StringBuilder();
+                debug.append("🔍 Authentication Debug:\n\n");
+
+                // Check if userSessionManager exists
+                debug.append("UserSessionManager instance: ")
+                        .append(userSessionManager != null ? "✅ Exists" : "❌ NULL!")
+                        .append("\n");
+
+                // If it exists, check if this user has a session
+                if (userSessionManager != null) {
+                    UserSessionManager.UserSession session_1 = userSessionManager.getSession(chatId);
+                    debug.append("User session: ")
+                            .append(session_1 != null ? "✅ Exists" : "❌ Not found")
+                            .append("\n");
+
+                    // If session exists, check its state
+                    if (session_1 != null) {
+                        debug.append("Access token: ")
+                                .append(session_1.getAccessToken() != null ? "✅ Present" : "❌ Missing")
+                                .append("\n");
+
+                        debug.append("Refresh token: ")
+                                .append(session_1.getRefreshToken() != null ? "✅ Present" : "❌ Missing")
+                                .append("\n");
+
+                        // Check if the session thinks it's authenticated
+                        debug.append("Session.isAuthenticated(): ")
+                                .append(session_1.isAuthenticated() ? "✅ True" : "❌ False")
+                                .append("\n");
+
+                        // Check if manager thinks user is authenticated
+                        debug.append("UserSessionManager.isUserAuthenticated(): ")
+                                .append(userSessionManager.isUserAuthenticated(chatId) ? "✅ True" : "❌ False")
+                                .append("\n");
+                    }
+                }
+
+                sendTextMessage(chatId, debug.toString());
+                break;
+
+            case "/print_sessions":
+                // Print all sessions (admin only)
+                if (chatId == 7143567186l) { // Your user ID
+                    StringBuilder sessions = new StringBuilder("📋 All Sessions:\n\n");
+
+                    // Get all sessions if possible
+                    if (userSessionManager != null) {
+                        // Implement a method to get all sessions
+                        String sessionsInfo = userSessionManager.getDiagnostics();
+                        sessions.append(sessionsInfo);
+                    } else {
+                        sessions.append("❌ UserSessionManager is null!");
+                    }
+
+                    sendTextMessage(chatId, sessions.toString());
+                } else {
+                    sendTextMessage(chatId, "This command is restricted to administrators.");
+                }
                 break;
 
             default:
@@ -356,7 +440,7 @@ public class SpotifyTelegramBot extends TelegramLongPollingBot {
      * Handles the Spotify authorization code provided by the user
      * This method exchanges the authorization code for access and refresh tokens
      * and stores them in the user's session
-     * 
+     *
      * @param chatId The Telegram chat ID of the user
      * @param code   The authorization code from Spotify
      * @throws ParseException
@@ -365,52 +449,45 @@ public class SpotifyTelegramBot extends TelegramLongPollingBot {
     // In SpotifyTelegramBot.java
     private void handleAuthorizationCode(long chatId, String code) {
         try {
-            // Send processing message
-            sendTextMessage(chatId, "🔄 Processing your Spotify authorization code...");
-
-            // Debug log
+            sendTextMessage(chatId, "🔄 Processing your authorization code...");
             System.out.println("Processing authorization code for user: " + chatId);
 
-            // Exchange the code for tokens
+            // Get UserSessionManager instance
+            UserSessionManager sessionManager = UserSessionManager.getInstance();
+            System.out.println("Got UserSessionManager instance: " + sessionManager);
+
+            // Exchange code for tokens
             AuthorizationCodeCredentials credentials = spotifyService.exchangeAuthorizationCode(code);
 
             if (credentials != null) {
-                // Debug log the credentials
-                System.out.println("Received credentials: Access token length=" +
-                        (credentials.getAccessToken() != null ? credentials.getAccessToken().length() : 0) +
-                        ", Refresh token present=" + (credentials.getRefreshToken() != null));
+                System.out.println("Received credentials for user " + chatId);
 
-                // Get user session - CRITICAL PART
-                UserSession session = sessionManager.getOrCreateSession(chatId);
+                // Get or create a session
+                UserSessionManager.UserSession session = sessionManager.getOrCreateSession(chatId);
+                System.out.println("Got session for user " + chatId + ": " + session);
 
-                // Save tokens to session
-                session.setAccessToken(credentials.getAccessToken());
-                session.setRefreshToken(credentials.getRefreshToken());
-                session.setAuthenticated(true); // Explicitly set authenticated state
+                if (session != null) {
+                    // Store the credentials
+                    session.setAccessToken(credentials.getAccessToken());
+                    session.setRefreshToken(credentials.getRefreshToken());
+                    session.setAuthenticated(true);
 
-                // Debug log the session state after saving
-                System.out.println("After saving: User " + chatId + " authentication status: " +
-                        sessionManager.isUserAuthenticated(chatId));
+                    System.out.println("Stored credentials for user " + chatId +
+                            " - Authentication status: " + sessionManager.isUserAuthenticated(chatId));
 
-                // Send success message
-                sendTextMessage(chatId,
-                        "✅ Spotify authentication successful! You can now control Spotify through this bot.\n\n" +
-                                "Try these commands:\n" +
-                                "/play [song name] - Play a song\n" +
-                                "/pause - Pause playback\n" +
-                                "/resume - Resume playback\n" +
-                                "/current - Show currently playing track\n\n" +
-                                "Use /status to check your connection status.");
+                    sendTextMessage(chatId, "✅ Authentication successful! You can now use Spotify commands.");
+                } else {
+                    System.err.println("Failed to get session for user " + chatId);
+                    sendTextMessage(chatId, "❌ Error: Failed to store authentication data.");
+                }
             } else {
-                // Log the error
-                System.err.println("ERROR: No credentials received for user: " + chatId);
-                sendTextMessage(chatId, "❌ Authentication failed: No credentials received from Spotify.");
+                System.err.println("No credentials received for user " + chatId);
+                sendTextMessage(chatId, "❌ Authentication failed: No credentials received.");
             }
         } catch (Exception e) {
-            // Log the error
-            System.err.println("ERROR authenticating user " + chatId + ": " + e.getMessage());
+            System.err.println("Error during authentication: " + e.getMessage());
             e.printStackTrace();
-            sendTextMessage(chatId, "❌ Error during authentication: " + e.getMessage());
+            sendTextMessage(chatId, "❌ Error: " + e.getMessage());
         }
     }
 }

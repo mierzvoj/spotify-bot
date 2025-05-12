@@ -1,10 +1,10 @@
 package bot.services;
 
+import bot.shared.UserSessionManager;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
-import bot.auth.UserSessionManager;
-import bot.auth.UserSessionManager.UserSession;
+
 
 import org.apache.hc.core5.http.ParseException;
 import se.michaelthelin.spotify.SpotifyApi;
@@ -30,9 +30,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
 public class SpotifyService {
-    private static final String CLIENT_ID = "";
-    private static final String CLIENT_SECRET = "";
-    URI redirectUri = URI.create("https://spotbot3-muhf813tp-mierzvojs-projects.vercel.app/api/callback");
+    private static final String CLIENT_ID = "d985f131818f42b4b4eacdd65dc9e681";
+    private static final String CLIENT_SECRET = "bb3441f6fe77456a88fd5ce1c8b94bb9";
+    URI redirectUri = URI.create("https://spotbot3-6nzlbranf-mierzvojs-projects.vercel.app/api/callback");
 
     private final SpotifyApi spotifyApi;
 
@@ -109,7 +109,7 @@ public class SpotifyService {
     // In SpotifyService.java
 public boolean playTrack(long userId, String trackUri) {
     // Get user session from UserSessionManager
-    UserSession session = UserSessionManager.getInstance().getSession(userId);
+    UserSessionManager.UserSession session = UserSessionManager.getInstance().getSession(userId);
     
     if (session == null || !session.isAuthenticated()) {
         System.err.println("User " + userId + " not authenticated");
@@ -145,7 +145,7 @@ public boolean playTrack(long userId, String trackUri) {
 
 // Refresh token for a specific user
 public boolean refreshAccessToken(long userId) {
-    UserSession session = UserSessionManager.getInstance().getSession(userId);
+    UserSessionManager.UserSession session = UserSessionManager.getInstance().getSession(userId);
     
     if (session == null || session.getRefreshToken() == null) {
         System.err.println("No refresh token available for user " + userId);

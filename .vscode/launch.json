@@ -16,7 +16,7 @@
       "env": {
         "SPOTIFY_CLIENT_ID": "your_spotify_client_id",
         "SPOTIFY_CLIENT_SECRET": "your_spotify_client_secret",
-        "SPOTIFY_REDIRECT_URI": "https://spotbot3-muhf813tp-mierzvojs-projects.vercel.app/api/callback",
+        "SPOTIFY_REDIRECT_URI": "https://spotbot3-6nzlbranf-mierzvojs-projects.vercel.app/api/callback",
         "TELEGRAM_BOT_TOKEN": "your_telegram_bot_token"
       }
     }
